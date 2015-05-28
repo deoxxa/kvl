@@ -36,6 +36,28 @@ func (r Record) GetAll(key string) []string {
 	return l
 }
 
+// Add adds a key/value pair to the list.
+func (r Record) Add(key, value string) Record {
+	return append(r, Pair{key, value})
+}
+
+// Set replaces the value of the first existing pair with the key specified, or,
+// if a pair with that key is not found, inserts a new pair into the list.
+func (r Record) Set(key, value string) Record {
+	r2 := make(Record, len(r))
+	copy(r2, r)
+
+	for i, p := range r2 {
+		if p[0] == key {
+			r2[i][1] = value
+
+			return r2
+		}
+	}
+
+	return r2.Add(key, value)
+}
+
 // String renders the list as a string, preserving insertion order.
 func (r Record) String() string {
 	s := ""

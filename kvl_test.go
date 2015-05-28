@@ -106,3 +106,22 @@ func TestEmptyStrings(t *testing.T) {
 	a.NotEqual(Record{{"", ""}}, Parse(""))
 	a.Equal("", (Record{{"", ""}}).String())
 }
+
+func TestAdd(t *testing.T) {
+	a := assert.New(t)
+
+	var r Record
+
+	a.Equal(Record{{"a", "b"}}, r.Add("a", "b"))
+	a.Equal(Record{{"c", "d"}}, r.Add("c", "d"))
+}
+
+func TestSet(t *testing.T) {
+	a := assert.New(t)
+
+	r := Record{{"a", "b"}}
+
+	a.Equal(Record{{"a", "x"}}, r.Set("a", "x"))
+	a.Equal(Record{{"a", "b"}}, r)
+	a.Equal(Record{{"a", "b"}, {"z", "1"}}, r.Set("z", "1"))
+}
