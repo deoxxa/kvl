@@ -24,6 +24,11 @@ var goodcases = []tcase{
 		{"a", "1"},
 		{"a", "2"},
 	}},
+	{"x y z", Record{
+		{"x", ""},
+		{"y", ""},
+		{"z", ""},
+	}},
 }
 
 var badcases = []tcase{
