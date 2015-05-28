@@ -27,9 +27,6 @@ var goodcases = []tcase{
 }
 
 var badcases = []tcase{
-	{"", Record{
-		{"", ""},
-	}},
 	{"a=b", Record{
 		{"a", ""},
 	}},
@@ -52,24 +49,24 @@ var badcases = []tcase{
 func TestParse(t *testing.T) {
 	a := assert.New(t)
 
-	for _, c := range goodcases {
-		a.Equal(c.r, Parse(c.s), c.s)
+	for i, c := range goodcases {
+		a.Equal(c.r, Parse(c.s), "[%d] %q", i, c.s)
 	}
 
-	for _, c := range badcases {
-		a.NotEqual(c.r, Parse(c.s), c.s)
+	for i, c := range badcases {
+		a.NotEqual(c.r, Parse(c.s), "[%d] %q", i, c.s)
 	}
 }
 
 func TestString(t *testing.T) {
 	a := assert.New(t)
 
-	for _, c := range goodcases {
-		a.Equal(c.s, c.r.String(), c.s)
+	for i, c := range goodcases {
+		a.Equal(c.s, c.r.String(), "[%d] %q", i, c.s)
 	}
 
-	for _, c := range badcases {
-		a.NotEqual(c.s, c.r.String(), c.s)
+	for i, c := range badcases {
+		a.NotEqual(c.s, c.r.String(), "[%d] %q", i, c.s)
 	}
 }
 
@@ -87,4 +84,20 @@ func TestGet(t *testing.T) {
 	a.Equal("y", r.Get("x"))
 	a.Equal([]string{"y"}, r.GetAll("x"))
 	a.Equal("", r.Get("z"))
+}
+
+func TestDoubleSpaces(t *testing.T) {
+	a := assert.New(t)
+
+	a.Equal(Record{
+		{"a", "b"},
+		{"c", "d"},
+	}, Parse("a=b  c=d"))
+}
+
+func TestEmptyStrings(t *testing.T) {
+	a := assert.New(t)
+
+	a.NotEqual(Record{{"", ""}}, Parse(""))
+	a.Equal("", (Record{{"", ""}}).String())
 }

@@ -45,7 +45,11 @@ func (r Record) String() string {
 			s += " "
 		}
 
-		s += p[0] + "=" + p[1]
+		s += p[0]
+
+		if p[1] != "" {
+			s += "=" + p[1]
+		}
 	}
 
 	return s
@@ -60,8 +64,17 @@ func Parse(s string) Record {
 	var r Record
 
 	for _, s := range strings.Split(s, " ") {
+		if len(s) == 0 {
+			continue
+		}
+
 		p := strings.SplitN(s, "=", 2)
-		r = append(r, [2]string{p[0], p[1]})
+
+		if len(p) == 1 {
+			r = append(r, Pair{p[0], ""})
+		} else {
+			r = append(r, Pair{p[0], p[1]})
+		}
 	}
 
 	return r
