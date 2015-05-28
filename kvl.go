@@ -5,8 +5,11 @@ import (
 	"strings"
 )
 
+// Pair implements a single key/value pair
+type Pair [2]string
+
 // Record implements a list of key/value pairs
-type Record [][2]string
+type Record []Pair
 
 // Get retrieves a value from the list as a string. It will return an empty
 // string if no record with that key exists.
